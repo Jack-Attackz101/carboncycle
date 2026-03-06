@@ -1,0 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Cormorant Garamond", serif;
+  --font-mono: "Space Mono", monospace;
+  --color-bg: #0a0f0a;
+  --color-accent: #5cba5c;
+  --color-solar: #ffd84a;
+  --color-amber: #e07840;
+  --color-water: #4a9eff;
+  --color-storage: #8e8e8e;
+  --glow-green: 0 0 20px rgba(92,186,92,0.4);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-size: clamp(14px, 1vw + 10px, 18px);
+  }
+  
+  body {
+    @apply bg-bg text-white font-mono antialiased;
+    overflow-x: hidden;
+  }
+
+  h1 {
+    @apply font-display text-[clamp(4rem,15vw,10rem)];
+  }
+
+  h2 {
+    @apply font-display text-[clamp(2.5rem,8vw,6rem)];
+  }
+}
+
+.section-padding {
+  @apply px-[clamp(20px,8vw,80px)] py-[clamp(30px,6vh,60px)];
+}
+
+.snap-container {
+  scroll-snap-type: y mandatory;
+  height: 100vh;
+  overflow-y: scroll;
+}
+
+.snap-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hide scrollbar but keep functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes float-up {
+  0% {
+    transform: translateY(110vh) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.4;
+  }
+  90% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(-10vh) translateX(var(--drift, 20px));
+    opacity: 0;
+  }
+}
+
+.co2-particle {
+  position: absolute;
+  pointer-events: none;
+  animation: float-up linear infinite;
+  color: rgba(255, 255, 255, 0.15);
+  font-size: 10px;
+  font-family: var(--font-mono);
+  will-change: transform, opacity;
+}
+
+@keyframes bounce-subtle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(10px); }
+}
+
+.animate-bounce-subtle {
+  animation: bounce-subtle 2s ease-in-out infinite;
+}
+
+.glass-box {
+  @apply bg-white/5 border border-white/10 backdrop-blur-sm rounded-sm p-6;
+  box-shadow: var(--glow-green);
+}
+
+.badge {
+  @apply inline-block px-3 py-1 text-[10px] tracking-[0.2em] uppercase font-bold rounded-full mb-4;
+}
+
+/* Grain Texture Overlay */
+.grain-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9998; /* Just below AI chat */
+  opacity: 0.04;
+}
+
+/* Tooltip Styles */
+.tooltip {
+  @apply absolute hidden group-hover:block bg-black/90 border border-white/20 text-[10px] p-2 rounded-sm z-50 pointer-events-none whitespace-nowrap tracking-wider;
+  transform: translate(-50%, -100%);
+  margin-top: -10px;
+  box-shadow: var(--glow-green);
+}
+
+/* SVG Hover Glow */
+.svg-hover-element {
+  @apply transition-all duration-300 cursor-help;
+}
+.svg-hover-element:hover {
+  filter: drop-shadow(0 0 12px currentColor);
+  stroke-width: 2px;
+}
+
+.vertical-rl {
+  writing-mode: vertical-rl;
+}
+
+/* Nav Dot Ripple */
+@keyframes ripple {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(3); opacity: 0; }
+}
+
+.nav-dot-active::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border: 1px solid var(--color-accent);
+  border-radius: 50%;
+  animation: ripple 1.5s infinite;
+}
